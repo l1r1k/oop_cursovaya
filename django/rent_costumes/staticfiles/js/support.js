@@ -1,6 +1,3 @@
-/**
- * Чат поддержки: арендатор (/support/) и сотрудники (/support-panel/).
- */
 class SupportChat {
     constructor() {
         this.mode = window.location.pathname.includes('support-panel') ? 'staff' : 'renter';
@@ -194,9 +191,7 @@ class SupportChat {
     connectWebSocket() {
         try {
             const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const host = window.location.hostname;
-            const port = parseInt(window.WS_PORT, 10) || 8001;
-            this.socket = new WebSocket(`${protocol}//${host}:${port}/ws`);
+            this.socket = new WebSocket(`${protocol}//${window.location.host}/ws`);
 
             this.socket.onopen = () => {
                 this.reconnectAttempts = 0;
@@ -330,6 +325,8 @@ class SupportChat {
             ticketEl.appendChild(datetime);
             ticketEl.appendChild(status);
             ticketEl.addEventListener('click', () => this.selectTicket(ticket.ticket_id, ticket));
+            ticketEl.style.backgroundColor = parseInt(ticketEl.dataset.ticketId, 10) === parseInt(this.currentTicketId, 10) ? 'var(--secondary)' : '';
+            
             list.appendChild(ticketEl);
         });
 
@@ -368,7 +365,16 @@ class SupportChat {
 
         const chatLocked = isClosed;
         if (this.messageInputBlock) {
-            this.messageInput.display = chatLocked ? 'none' : 'flex';
+            this.messageInputBlock.style.display = chatLocked ? 'none' : 'flex';
+        }
+        if (this.messageInput) {
+            this.messageInput.disabled = chatLocked;
+        }
+        if (this.sendButton) {
+            this.sendButton.disabled = chatLocked;
+        }
+        if (this.attachButton) {
+            this.attachButton.disabled = chatLocked;
         }
     }
 

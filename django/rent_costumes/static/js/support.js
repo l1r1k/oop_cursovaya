@@ -1,6 +1,3 @@
-/**
- * Чат поддержки: арендатор (/support/) и сотрудники (/support-panel/).
- */
 class SupportChat {
     constructor() {
         this.mode = window.location.pathname.includes('support-panel') ? 'staff' : 'renter';
@@ -194,9 +191,7 @@ class SupportChat {
     connectWebSocket() {
         try {
             const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const host = window.location.hostname;
-            const port = parseInt(window.WS_PORT, 10) || 8001;
-            this.socket = new WebSocket(`${protocol}//${host}:${port}/ws`);
+            this.socket = new WebSocket(`${protocol}//${window.location.host}/ws`);
 
             this.socket.onopen = () => {
                 this.reconnectAttempts = 0;

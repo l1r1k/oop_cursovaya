@@ -299,9 +299,7 @@ function initRenterUuidSocket() {
     }
 
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const host = window.location.hostname;
-    const port = 8001;
-    const socket = new WebSocket(`${protocol}//${host}:${port}/ws`);
+    const socket = new WebSocket(`${protocol}//${window.location.host}/ws`);
     let renterUUID = sessionStorage.getItem('renterUUID');
 
     socket.onopen = function () {

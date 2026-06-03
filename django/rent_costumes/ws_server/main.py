@@ -46,7 +46,15 @@ async def _save_message_to_db(ticket_id: int, msg: str, sender_id: str, media_ur
         payload['media'] = media_urls
     try:
         async with httpx.AsyncClient(timeout=30.0) as client:
-            response = await client.post(url, json=payload)
+            # X-Forwarded-Proto: https — внутренний вызов идёт по http
+            # (web:8000), а в prod у Django включён SECURE_SSL_REDIRECT.
+            # Django доверяет этому заголовку (SECURE_PROXY_SSL_HEADER),
+            # поэтому не редиректит запрос на https и отдаёт 200.
+            response = await client.post(
+                url,
+                json=payload,
+                headers={'X-Forwarded-Proto': 'https'},
+            )
         if response.status_code == 200:
             return response.json()
         logger.warning('API save failed: %s %s', response.status_code, response.text)

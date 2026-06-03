@@ -1,9 +1,13 @@
 #!/bin/sh
+set -e
 
 FERNET_FILE="/app/fernet/fernet.key"
 
-echo "Waiting for postgres..."
-while ! nc -z $POSTGRES_HOST $POSTGRES_PORT; do
+DB_WAIT_HOST="${DB_HOST:-db}"
+DB_WAIT_PORT="${DB_PORT:-5432}"
+
+echo "Waiting for postgres at ${DB_WAIT_HOST}:${DB_WAIT_PORT}..."
+while ! nc -z "$DB_WAIT_HOST" "$DB_WAIT_PORT"; do
   sleep 1
 done
 echo "PostgreSQL started"
@@ -12,16 +16,15 @@ if [ ! -f "$FERNET_FILE" ]; then
   echo "Generating new Fernet key..."
   python - << END
 from cryptography.fernet import Fernet
-key = Fernet.generate_key()
 with open("$FERNET_FILE", "wb") as f:
-    f.write(key)
+    f.write(Fernet.generate_key())
 END
   echo "Fernet key generated"
 else
   echo "Fernet key exists"
 fi
 
-export FERNET_KEY=$(cat $FERNET_FILE)
+export FERNET_KEY=$(cat "$FERNET_FILE")
 
 echo "Applying migrations..."
 python manage.py migrate --noinput
@@ -34,12 +37,10 @@ python manage.py shell << END
 from django.contrib.auth import get_user_model
 import os
 User = get_user_model()
-
 username = os.getenv('DJANGO_SUPERUSER_USERNAME')
 email = os.getenv('DJANGO_SUPERUSER_EMAIL')
 password = os.getenv('DJANGO_SUPERUSER_PASSWORD')
-
-if not User.objects.filter(username=username).exists():
+if username and password and not User.objects.filter(username=username).exists():
     User.objects.create_superuser(username, email, password)
 END
 

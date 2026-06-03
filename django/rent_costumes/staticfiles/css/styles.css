@@ -1461,10 +1461,11 @@ input[type="checkbox"]{
 .ticket{
     display: flex;
     flex-direction: column;
-    padding: .25rem;
+    padding: .5rem;
     background: var(--primary);
     color: var(--white);
     border-radius: var(--spacing-xs);
+    cursor: pointer;
 }
 
 .chat{
@@ -1510,7 +1511,6 @@ input[type="checkbox"]{
     padding: 1rem;
     overflow-x: auto;
     max-height: 400px;
-    min-width: 800px;
 }
 
 .message-from{
