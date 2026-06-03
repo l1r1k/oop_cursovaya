@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход в систему</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="icon" href="{% static 'images/favicon.png'%}" type="image/x-icon">
+</head>
+<body>
+
+<div class="login-wrapper">
+    <form method="post" class="login-card">
+        {% csrf_token %}
+
+        <h2>Авторизация</h2>
+
+        {% if form.errors %}
+            <div class="error-box">
+                Неверный логин или пароль
+            </div>
+        {% endif %}
+
+        <div class="field">
+            {{ form.username }}
+            <label>Логин</label>
+        </div>
+
+        <div class="field">
+            {{ form.password }}
+            <label>Пароль</label>
+        </div>
+
+        <button type="submit">Войти</button>
+    </form>
+</div>
+
+</body>
+</html>

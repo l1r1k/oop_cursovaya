@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body{
+            font-family:Arial,sans-serif;
+            line-height:1.6;
+            color:#333;
+            max-width:600px;
+            margin:0 auto;
+            padding:20px
+        }
+        .header{
+            background:#2D1B4E;
+            color:white;
+            padding:30px;
+            text-align:center;
+            border-radius:8px
+        }
+        .item{
+            display:flex;
+            gap:20px;
+            padding:15px;
+            background:#f5f5f5;
+            margin:10px 0;
+            border-radius:8px
+        }
+        .item img{
+            width:100px;
+            height:100px;
+            object-fit:cover;
+            border-radius:8px
+        }
+        .footer{
+            text-align:center;
+            padding:20px;
+            color:#666;
+            font-size:14px
+        }
+    </style>
+</head>
+<body>
+    <div class="header"><h1>{{ header_text }}</h1></div>
+    <div style="padding:20px">
+        <p>{{ full_name }},</p>
+        <p>Благодарим за оформление заявки на аренду костюмов!</p>
+        <p><strong>Номер заявки: #{{ request_id }}</strong></p>
+        <h3>Состав заявки:</h3>
+        {% for item in items %}
+            <div class="item">
+                {% if item.costume.photos.first %}
+                    <img src="{{ site_url }}/{{ item.costume.photos.first.photo.url }}" alt="{{ item.costume.name }}">
+                {% endif %}
+                <div>
+                    <strong>{{ item.costume.name  }}</strong>
+                    <p>Количество: {{ item.quantity }} шт.</p>
+                </div>
+            </div>
+        {% endfor %}
+        {% if rent %}
+            <h3>Согласованная дата аренды: с {{ rent.date_start }} {{ rent.time_start }} по {{ rent.date_end }} {{ rent.time_end }}</h3>
+        {% endif %}
+        {% if final_cost %}
+            <h3>Итого: {{ final_cost }}₽</h3>
+        {% endif %}
+        <p style="margin-top:30px">Вы можете отследить статус заявки по ссылке:</p>
+        <a href="{{ track_url }}" style="display:inline-block;padding:12px 30px;background:#2D1B4E;color:white;text-decoration:none;border-radius:8px;margin:10px 0">Отследить заявку</a>
+        {% if ordering %}
+            <p style="margin-top:20px;color:#666">Ожидайте подтверждение от менеджера. Мы свяжемся с вами в ближайшее время.</p>
+        {% endif %}
+    </div>
+    <div class="footer"><p>С уважением,<br>ОЦНК</p></div>
+</body>
+</html>

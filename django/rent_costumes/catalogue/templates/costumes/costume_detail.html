@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Детали костюма{% endblock %}
+{% block content %}
+<div class="detail-container">
+    <div class="detail-grid">
+        <div class="gallery">
+            <img id="mainImage" class="main-image skeleton" onclick="openFullscreen()">
+            <div class="thumbnails" id="thumbnails"></div>
+        </div>
+        <div class="info" id="costumeInfo">
+            <span class="badge skeleton-text skeleton" style="display:inline-block; width: 80%;"></span>
+            <h1 class="skeleton-text skeleton"></h1>
+            
+            <div class="details">
+                <div class="detail-row">
+                    <span class="detail-label">Доступность:</span>
+                        <span class="skeleton-text skeleton" style="display:inline-block; width: 80%;"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Стоимость аренды:</span>
+                    <span class="skeleton-text skeleton" style="display:inline-block; width: 80%;"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Размер:</span>
+                    <span class="skeleton-text skeleton" style="display:inline-block; width: 80%;"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Пол:</span>
+                    <span class="skeleton-text skeleton" style="display:inline-block; width: 80%;"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Состояние:</span>
+                    <span class="skeleton-text skeleton" style="display:inline-block; width: 80%;"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Сезон:</span>
+                    <span class="skeleton-text skeleton" style="display:inline-block; width: 80%;"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Цвета:</span>
+                    <span class="skeleton-text skeleton" style="display:inline-block; width: 80%;"></span>  
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Материалы:</span>
+                    <span class="skeleton-text skeleton" style="display:inline-block; width: 80%;"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Примечание:</span>
+                    <span class="skeleton-text skeleton" style="display:inline-block; width: 80%;"></span>
+                </div>
+            </div>
+            <div class="filter-expand-btn" id="infoToggle">
+                Показать
+            </div>
+            <div class="actions">
+                <button class="btn btn-primary skeleton" onclick="addToCart()" id="addToCartBtn" disabled>
+                    Добавить в корзину
+                </button>
+                <button class="btn btn-outline" onclick="window.location.href='/cart/'">
+                    Перейти в корзину
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fullscreen-overlay" id="fullscreenOverlay">
+    <button class="fullscreen-close" onclick="closeFullscreen()">✕</button>
+    <button class="fullscreen-nav prev" onclick="prevImage()">‹</button>
+    <img id="fullscreenImage" class="fullscreen-image" alt="">
+    <button class="fullscreen-nav next" onclick="nextImage()">›</button>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/costume_detail.js' %}"></script>
+{% endblock %}

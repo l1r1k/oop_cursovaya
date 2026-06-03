@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Корзина{% endblock %}
+{% block content %}
+<div class="cart-container">
+    <h1 style="font-family:var(--font-display);font-size:2.5rem;margin-bottom:2rem">Корзина</h1>
+    <div id="cartContent"></div>
+    <div class="cart-summary" id="cartSummary">
+        <h3>Итого</h3>
+        <p>Костюмов: <strong class="skeleton-text short skeleton" id="totalItems" style="display: inline-block; width: 1rem; margin: 0;"></strong></p>
+        <p>Общая стоимость за сутки: <strong class="skeleton-text short skeleton" id="totalCost" style="display: inline-block; width: 3rem; margin: 0;"></strong></p>
+        <button class="btn btn-primary checkout-btn skeleton" onclick="openCheckoutModal()" disabled style="color: black;">Оформить заявку</button>
+    </div>
+</div>
+
+<div class="modal" id="checkoutModal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeCheckoutModal()">✕</button>
+        <h2 style="margin-bottom:1rem">Оформление заявки</h2>
+        <form id="checkoutForm" onsubmit="submitRequest(event)">
+            <div style="margin-bottom:1rem"><label for="last_name">Фамилия *</label><input type="text" id="last_name" name="last_name" required style="width:100%;padding:.75rem;border:2px solid var(--border);border-radius:8px"></div>
+                <div style="margin-bottom:1rem"><label for="first_name">Имя *</label><input type="text" id="first_name" name="first_name" required style="width:100%;padding:.75rem;border:2px solid var(--border);border-radius:8px"></div>
+                <div style="margin-bottom:1rem"><label for="middle_name">Отчество</label><input type="text" id="middle_name" name="middle_name" style="width:100%;padding:.75rem;border:2px solid var(--border);border-radius:8px"></div>
+                <div style="margin-bottom:1rem"><label for="phone_number">Телефон *</label><input type="tel" id="phone_number" name="phone_number" required style="width:100%;padding:.75rem;border:2px solid var(--border);border-radius:8px"></div>
+                <div style="margin-bottom:.25rem"><label for="email">Email *</label><input type="email" id="email" name="email" required style="width:100%;padding:.75rem;border:2px solid var(--border);border-radius:8px"></div>
+                <span style="display: block; color: var(--text-light); margin-bottom: 1rem;">* - Обязательные поля для заполнения</span>
+                <div style="display: flex; flex-direction: row; align-items: center; margin-bottom:1rem; gap: 1rem;"><input type="checkbox" name="agreement" required><p style="text-align: justify;">Я подтверждаю ознакомление и даю согласие на обработку моих персональных данных в порядке и на условиях, указанных в <a href="#">Политике обработки персональных данных</a></p></div>
+                <button type="submit" class="btn btn-primary" style="width:100%">Отправить заявку</button>
+        </form>
+        <div id="successMessage" style="display:none;text-align:center;padding:2rem">
+            <div style="font-size:3rem">✅</div>
+            <h3>Заявка успешно создана!</h3>
+            <p id="requestIdMessage"></p>
+            <p>Ожидайте подтверждение менеджера. Письмо отправлено на указанный email.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/cart.js' %}"></script>
+{% endblock %}

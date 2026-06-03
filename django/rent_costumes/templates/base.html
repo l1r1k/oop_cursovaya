@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Аренда костюмов{% endblock %}</title>
+    <link rel="icon" href="{% static 'images/favicon.png'%}" type="image/x-icon">
+    <link rel="icon" href="{% static 'images/favicon.png'%}" sizes="any">
+    <link rel="icon" href="{% static 'images/favicon.png'%}" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{% static 'images/favicon.png'%}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="{% url 'costumes:catalog' %}" class="nav-link a-logo"> </a>
+            
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                ☰
+            </button>
+            
+            <ul class="navbar-nav" id="navbarNav">
+                <li><a href="{% url 'costumes:catalog' %}" class="nav-link" id="navLink">Каталог</a></li>
+                <li><a href="{% url 'costumes:track_request' %}" class="nav-link" id="navLink">Отследить заявку</a></li>
+                <li><a href="{% url 'costumes:support'%}" class="nav-link" id="navLink">Поддержка</a></li>
+                <li>
+                    <a href="{% url 'costumes:cart' %}" class="nav-link cart-badge" id="navLink">
+                        Корзина
+                        <span class="cart-count" id="cartCount">0</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Основной контент -->
+    <main class="{% block class_block %} {% endblock %}">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% load static %}
+    <footer>
+        <hr class="footer_hr">
+        <div class="container">
+            <div class="align-self-center">
+                <a href="https://vk.com/ocnk89" target="_blank"><img src="{% static 'images/VKLogo.svg'%}" class="social-logo"></a>
+                <a href="https://t.me/ocnk89" target="_blank"><img src="{% static 'images/TGLogo.svg'%}" class="social-logo"></a>
+                <a href="https://xn--80aaa1bfcf4aric0iwb.xn--p1ai/" target="_blank"><img src="{% static 'images/depculturewhitelogo.png' %}" class="social-logo"></a>
+            </div>
+
+            <div class="align-self-center">
+                <p>Всегда рады помочь вам</p>
+            </div>
+
+            <div class="col">
+                <p>Государственное автономное учреждение культуры Ямало-Ненецкого автономного округа «Окружной Центр национальных культур»</p>
+                <p>Адрес: 629008, Ямало-Ненецкий автономный округ, г. Салехард, ул. Республики, д. 74</p>
+                <p>График работы: Пн-Вс с 8:30 до 23:00</p>
+                <p>Телефон кассы: <a class="a-pink" href="tel:+7 (34922) 4-58-98">+7 (34922) 4-58-98</a></p>
+                <p>График работы кассы: Пн, Вт – выходные дни, Ср – с 12:00 до 20:00, Чт–Вс – с 12:00 до 19:00</p>
+                <p>Электронная почта: <a class="a-pink" href="mailto:ocnk@yanao.ru">ocnk@yanao.ru</a></p>
+                <p>Сайт: <a class="a-pink" href="https://ocnk.yanao.ru">ocnk.yanao.ru</a></p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Базовые скрипты -->
+    <script src="{% static 'js/base.js' %}"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

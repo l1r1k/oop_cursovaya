@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Отслеживание заявки{% endblock %}
+{% block class_block %}container{% endblock %}
+{% block content %}
+<div class="track-container">
+    <h1 style="font-family:var(--font-display);text-align:center;margin-bottom:2rem">Отслеживание заявки</h1>
+    <div class="track-form">
+        <input type="number" id="requestIdInput" placeholder="Введите номер заявки" onkeypress="if(event.key==='Enter')trackRequest()">
+        <button class="btn btn-primary" style="width:100%" onclick="trackRequest()">Отследить</button>
+    </div>
+    <div id="requestInfo" style="display:none" class="request-info"></div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/track_requests.js' %}"></script>
+{% endblock %}

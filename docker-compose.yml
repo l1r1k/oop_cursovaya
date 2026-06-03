@@ -1,0 +1,67 @@
+services:
+
+  db:
+    image: postgres:16
+    container_name: postgres_db
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+  web:
+    build: ./django
+    container_name: django_app
+    restart: always
+    command: /app/entrypoint.sh
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+      - fernet_key_volume:/app/fernet
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  nginx:
+    image: nginx:1.25
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+
+    depends_on:
+      web:
+        condition: service_healthy
+    networks:
+      - backend
+
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
+  fernet_key_volume:
+
+networks:
+  backend:

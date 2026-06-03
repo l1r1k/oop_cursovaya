@@ -1,0 +1,29 @@
+<div class="modal" id="ticketCreateModal" style="display:none; z-index:3900;" aria-modal="true" role="dialog">
+    <div class="modal-content" style="max-width:560px;">
+        <button type="button" class="modal-close" id="ticketCreateCloseBtn" aria-label="Закрыть">✕</button>
+        <h2 style="margin-bottom:1rem;">Новое обращение</h2>
+        <p style="color:var(--text-light);margin-bottom:1rem;">Опишите проблему — мы создадим заявку и откроем чат.</p>
+        <form id="ticketCreateForm" class="support-drop-zone">
+            <div style="margin-bottom:1rem;">
+                <label for="ticketTheme">Тема *</label>
+                <input type="text" id="ticketTheme" name="theme" required maxlength="256"
+                       placeholder="Кратко о проблеме"
+                       style="width:100%;padding:.75rem;border:2px solid var(--border);border-radius:8px;">
+            </div>
+            <div style="margin-bottom:1rem;">
+                <label for="ticketBody">Сообщение</label>
+                <textarea id="ticketBody" name="body" rows="4" maxlength="1024"
+                          placeholder="Подробности обращения"
+                          style="width:100%;padding:.75rem;border:2px solid var(--border);border-radius:8px;"></textarea>
+            </div>
+            <div class="support-attach-row" style="margin-bottom:1rem;">
+                <input type="file" id="ticketCreateMediaInput" accept="image/jpeg,image/png,image/webp" multiple hidden>
+                <button type="button" class="btn btn-outline" id="ticketCreateAttachBtn">📎 Изображения (до 5)</button>
+            </div>
+            <p class="support-drop-hint">Или перетащите изображения в форму</p>
+            <div class="support-attach-preview" id="ticketCreatePreview"></div>
+            <p id="ticketCreateError" style="display:none;color:var(--accent);margin-bottom:1rem;"></p>
+            <button type="submit" class="btn btn-primary" id="ticketCreateSubmitBtn" style="width:100%;">Создать заявку</button>
+        </form>
+    </div>
+</div>

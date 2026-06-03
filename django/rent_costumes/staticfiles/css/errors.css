@@ -1,0 +1,66 @@
+:root {
+    --primary: #006664;
+    --primary-light: #009390;
+    --secondary: #7d0eb2;
+    --secondary-light: #9911d8;
+    --accent: #E63946;
+    --bg: #FAFAFA;
+    --bg-alt: #F5F1ED;
+    --text: #1A1A1A;
+    --text-light: #6B6B6B;
+    --border: #E0E0E0;
+    --white: #FFFFFF;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+    background-color: var(--white);
+    padding: 40px 60px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    max-width: 500px;
+}
+
+h1 {
+    font-size: 80px;
+    margin: 0;
+    color: var(--primary);
+}
+
+h2 {
+    font-size: 28px;
+    margin: 20px 0 10px 0;
+    color: var(--secondary);
+}
+
+p {
+    font-size: 18px;
+    color: var(--text-light);
+}
+
+a.button {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 28px;
+    text-decoration: none;
+    color: var(--white);
+    background: var(--primary);
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+a.button:hover {
+    background: var(--primary-light);
+}

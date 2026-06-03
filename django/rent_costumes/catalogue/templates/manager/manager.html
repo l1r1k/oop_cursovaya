@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Панель менеджера{% endblock %}
+{% block content %}
+<div class="manager-container">
+    <h1 style="font-family:var(--font-display);margin-bottom:2rem">Панель менеджера</h1>
+    
+    <div class="stats-grid" id="stats"></div>
+    
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('requests')">Заявки</div>
+        <div class="tab" onclick="switchTab('rents')">Аренды</div>
+    </div>
+    
+    <div id="content"></div>
+</div>
+
+<div class="modal" id="createRentModal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeRentModal()">✕</button>
+        <h2 class="mb-2">Создание аренды</h2>
+        
+        <div class="rent-items-loading" id="rentItemsLoading">
+            <div class="loading-circle"></div>
+            <p class="loading-text">Загрузка состава заявки...</p>
+        </div>
+        
+        <div class="rent-items-list" id="rentItemsList">
+            <h3 class="rent-items-title">Состав заявки</h3>
+            
+            <div class="rent-items-content" id="rentItemsContent"></div>
+            
+            <div class="rent-items-cost-per-day">
+                <span class="cost-per-day-label">Стоимость за сутки:</span>
+                <span class="cost-per-day" id="costPerDay">
+                    0 ₽
+                </span>
+            </div>
+        </div>
+        
+        <form id="rentForm" onsubmit="createRent(event)">
+            <div style="mb-2">
+                <label class="rent-form-label">
+                    Дата начала аренды *
+                </label>
+                <small class="rent-form-mark">
+                    Дата начала аренды может быть не раньше, чем через 14 дней
+                </small>
+                <input type="date" class="rent-form-input" name="date_start" id="dateStart" required onchange="updateEndDate()">
+            </div>
+            
+            <div style="mb-2">
+                <label class="rent-form-label">
+                    Время начала аренды *
+                </label>
+                <input type="time" class="rent-form-input" name="time_start" id="timeStart" required onchange="syncEndTime()">
+            </div>
+            
+            <div style="mb-2">
+                <label class="rent-form-label">
+                    Дата окончания аренды *
+                </label>
+                <small class="rent-form-mark">
+                    Аренда должна длиться минимум 1 день
+                </small>
+                <input type="date" class="rent-form-input" name="date_end" id="dateEnd" required onchange="calculateTotalCost()">
+            </div>
+            
+            <div class="mb-2">
+                <label class="rent-form-label">
+                    Время окончания аренды *
+                </label>
+                <small class="rent-form-mark">
+                    Время окончания должно совпадать с временем начала аренды
+                </small>
+                <input type="time" class="rent-form-input" name="time_end" id="timeEnd" required readonly title="Время окончания совпадает с временем начала (аренда по суткам)">
+            </div>
+
+            <span style="display: block; color: var(--text-light); margin-bottom: 1rem;">* - Обязательные поля для заполнения</span>
+            
+            <div class="rent-final-block">
+                <div class="rent-final-info">
+                    <div>
+                        <div class="rent-final-info-days">
+                            Количество суток: <strong id="totalDays">0</strong>
+                        </div>
+                        <div class="rent-final-info-cost-label">
+                            Итоговая стоимость аренды:
+                        </div>
+                    </div>
+                    <div class="rent-final-info-cost-block">
+                        <div class="rent-final-total-cost" id="totalCost">
+                            0 ₽
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%;" id="submitRentBtn">
+                Создать аренду
+            </button>
+        </form>
+        
+        <div class="rent-error-message" id="rentErrorMessage"></div>
+    </div>
+</div>
+
+<div class="modal renter-info-modal" id="renterInfoModal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeRenterModal()">✕</button>
+        <div id="renterInfoContent"></div>
+
+        <div class="rent-items-list" id="rentItemsListRenter">
+            <h3 class="rent-items-title">Состав заявки</h3>
+            
+            <div class="rent-items-content" id="rentItemsContentRenter"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/manager.js' %}"></script>
+{% endblock %}

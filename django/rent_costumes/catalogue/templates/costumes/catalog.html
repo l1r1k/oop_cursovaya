@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Каталог театральных костюмов{% endblock %}
+{% block content %}
+<div class="catalog-header">
+    <div class="container">
+        <h1 class="catalog-title">Прокат театральных костюмов</h1>
+        <p class="catalog-subtitle">Окружной Центр национальных культур предоставляет возможность аренды своих театральных костюмов для ваших мероприятий</p>
+        <h1 class="catalog-title">Правила проката</h1>
+        <p class="catalog-subtitle">Прокат театральных костюмов оформляется по договору. Срок заключения договора 10 рабочих дней</p>
+        <p class="catalog-subtitle">Минимальный срок проката костюма — одни сутки</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="catalog-layout">
+        <aside class="filters-sidebar">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    class="search-input" 
+                    placeholder="Введите запрос..."
+                >
+            </div>
+
+            <div class="filters-collapse" id="filtersCollapse">
+                <div class="filter-group">
+                    <h3 class="filter-title">Размер</h3>
+
+                    <div class="collapse">
+                        <div class="filter-options" id="sizeFilters"></div>
+                    </div>
+
+                    <div class="filter-expand-btn" data-toggle>
+                        Показать
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h3 class="filter-title">Тип костюма</h3>
+
+                    <div class="collapse">
+                        <div class="filter-options" id="classificationFilters"></div>
+                    </div>
+
+                    <div class="filter-expand-btn" data-toggle>
+                        Показать
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h3 class="filter-title">Цвет</h3>
+
+                    <div class="collapse">
+                        <div class="filter-options" id="colorFilters"></div>
+                    </div>
+
+                    <div class="filter-expand-btn" data-toggle>
+                        Показать
+                    </div>
+                </div>
+
+                <button class="btn btn-outline clear-filters" onclick="clearFilters()">
+                    Сбросить фильтры
+                </button>
+            </div>
+
+            <div class="filter-expand-btn filters-toggle" id="filtersToggle">
+                Показать фильтры
+            </div>
+        </aside>
+
+        <section class="products-section">
+            <div class="products-header">
+                <div class="results-count" id="resultsCount">Загрузка...</div>
+            </div>
+            
+            <div class="products-grid" id="productsGrid">
+                <div class="skeleton-card skeleton">
+                    <div class="skeleton-img skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                    <div class="skeleton-text short skeleton"></div>
+                </div>
+                <div class="skeleton-card skeleton">
+                    <div class="skeleton-img skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                    <div class="skeleton-text short skeleton"></div>
+                </div>
+                <div class="skeleton-card skeleton">
+                    <div class="skeleton-img skeleton"></div>
+                    <div class="skeleton-text skeleton"></div>
+                    <div class="skeleton-text short skeleton"></div>
+                </div>
+            </div>
+            
+            <div class="pagination" id="pagination"></div>
+        </section>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/catalog.js' %}"></script>
+{% endblock %}

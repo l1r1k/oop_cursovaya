@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Панель поддержки{% endblock %}
+{% block class_block %}container{% endblock %}
+{% block content %}
+<h1 class="text-center">Панель поддержки</h1>
+{% include 'support/identity_modal.html' %}
+{% include 'support/media_lightbox.html' %}
+<div class="support-main support-locked" id="supportMain">
+    <aside class="tickets-block" id="ticketsBlock">
+        <h2>Заявки</h2>
+        <p class="support-empty" id="ticketsEmpty" style="display:none;">Тикетов нет</p>
+        <div class="tickets" id="ticketsList"></div>
+    </aside>
+    <div class="chat" id="chat">
+        <div class="chat-user-block">
+            <div class="chat-user-info">
+                <span class="chat-user-profile-name">—</span>
+                <span class="chat-user-theme">—</span>
+            </div>
+        </div>
+        <p class="support-empty support-empty-messages" id="messagesEmpty" style="display:none;">Сообщений пока нет</p>
+        <div class="messages-block" id="messagesBlock"></div>
+        <div class="support-attach-preview" id="messageAttachPreview"></div>
+        <div class="input-block support-drop-zone" id="messageInputBlock">
+            <input type="file" id="messageMediaInput" accept="image/jpeg,image/png,image/webp" multiple hidden>
+            <p class="support-drop-hint">Перетащите изображения сюда (до 5)</p>
+            <textarea class="message-input" id="messageInp" placeholder="Ваше сообщение..."></textarea>
+            <div class="input-block-actions">
+                <button type="button" class="btn btn-outline" id="attachMediaBtn" title="Прикрепить изображения">📎</button>
+                <button type="button" class="btn btn-outline" id="sendBtn">Отправить</button>
+                <button type="button" class="btn btn-outline" id="closeTicketBtn" disabled title="">Закрыть заявку</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/support_attach_dnd.js' %}"></script>
+<script src="{% static 'js/support_identity.js' %}"></script>
+<script src="{% static 'js/support.js' %}"></script>
+{% endblock %}
