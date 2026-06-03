@@ -4,14 +4,16 @@ services:
     image: postgres:16
     container_name: postgres_db
     restart: always
-    env_file:
-      - .env
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - backend
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -34,22 +36,21 @@ services:
     networks:
       - backend
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8000/health/ || exit 1"]
+      test: ["CMD-SHELL", "curl -fsS -H 'X-Forwarded-Proto: https' http://localhost:8000/health/ || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-
-  nginx:
-    image: nginx:1.25
-    container_name: nginx
+  ws:
+    build: ./django
+    container_name: ws_server
     restart: always
-    ports:
-      - "80:80"
-    volumes:
-      - static_volume:/app/staticfiles
-      - media_volume:/app/media
-
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001", "--app-dir", "ws_server", "--workers", "1"]
+    env_file:
+      - .env
+    environment:
+      DJANGO_API_URL: "http://web:8000"
+      WS_CORS_ORIGINS: "https://${DOMAIN}"
     depends_on:
       web:
         condition: service_healthy
@@ -57,11 +58,50 @@ services:
       - backend
 
 
+  nginx:
+    image: nginx:1.27
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN}
+      NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx
+      NGINX_ENVSUBST_FILTER: DOMAIN
+    volumes:
+      - ./nginx/nginx.conf.template:/etc/nginx/templates/nginx.conf.template:ro
+      - static_volume:/app/staticfiles:ro
+      - media_volume:/app/media:ro
+      - certbot_certs:/etc/letsencrypt:ro
+      - certbot_www:/var/www/certbot:ro
+    command: ["/bin/sh", "-c", "while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g 'daemon off;'"]
+    depends_on:
+      web:
+        condition: service_healthy
+      ws:
+        condition: service_started
+    networks:
+      - backend
+
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    restart: always
+    volumes:
+      - certbot_certs:/etc/letsencrypt
+      - certbot_www:/var/www/certbot
+    entrypoint: ["/bin/sh", "-c", "trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot; sleep 12h & wait $${!}; done"]
+
+
 volumes:
   postgres_data:
   static_volume:
   media_volume:
   fernet_key_volume:
+  certbot_certs:
+  certbot_www:
 
 networks:
   backend:
